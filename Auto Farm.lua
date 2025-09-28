@@ -3,9 +3,9 @@ local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
 local UserInputService = game:GetService("UserInputService")
 
 local Window = Rayfield:CreateWindow({
-   Name = "Build a Boat Auto Farm - By JABA",
+   Name = "Build a Boat Auto Farm",
    Icon = 0,
-   LoadingTitle = "Auto Farm",
+   LoadingTitle = "Build a Boat Auto Farm - By JABA",
    LoadingSubtitle = "by JABA",
    ShowText = "Rayfield",
    Theme = "Default",
@@ -136,14 +136,8 @@ local function chaoticTeleports()
    local lastCoord = coordinates[#coordinates]
    local basePosition = Vector3.new(lastCoord.X, lastCoord.Y, lastCoord.Z)
    local chaoticOffsets = {
-      Vector3.new(20, 0, 0),
-      Vector3.new(-20, 0, 0),
-      Vector3.new(0, 0, -20),
-      Vector3.new(0, 0, 20),
-      Vector3.new(15, 0, 15),
-      Vector3.new(-15, 0, -15),
-      Vector3.new(15, 0, -15),
-      Vector3.new(-15, 0, 15)
+      Vector3.new(0, 10, 0),
+      Vector3.new(0, -10, 0)
    }
    
    local startTime = tick()
@@ -158,7 +152,7 @@ local function chaoticTeleports()
    while tick() - startTime < 3 and isAutoFarmEnabled do
       local randomOffset = chaoticOffsets[math.random(1, #chaoticOffsets)]
       local targetPos = basePosition + randomOffset
-      teleportTo({X = targetPos.X, Y = basePosition.Y, Z = targetPos.Z}, 0.15)
+      teleportTo({X = targetPos.X, Y = targetPos.Y, Z = targetPos.Z}, 0.5)
       wait(0.1)
    end
 end
