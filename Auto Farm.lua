@@ -1,8 +1,9 @@
 getgenv().SecureMode = true
 local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+local UserInputService = game:GetService("UserInputService")
 
 local Window = Rayfield:CreateWindow({
-   Name = "Build a Boat",
+   Name = "Build a Boat Auto Farm - By JABA",
    Icon = 0,
    LoadingTitle = "Auto Farm",
    LoadingSubtitle = "by JABA",
@@ -58,6 +59,7 @@ local coordinates = {
 local isAutoFarmEnabled = false
 local isTeleporting = false
 local isNotificationEnabled = false
+local isAntiAfkEnabled = false
 local currentPlatform = nil
 local spinConnection = nil
 
@@ -195,6 +197,19 @@ local function startTeleportSequence()
    end)
 end
 
+local function startAntiAfk()
+   spawn(function()
+      while isAntiAfkEnabled do
+         if LocalPlayer.Character then
+            UserInputService:SendInput(Enum.KeyCode.Space, true)
+            wait(0.1)
+            UserInputService:SendInput(Enum.KeyCode.Space, false)
+         end
+         wait(30)
+      end
+   end)
+end
+
 LocalPlayer.CharacterAdded:Connect(function()
    if isAutoFarmEnabled then
       wait(3)
@@ -208,6 +223,12 @@ local Toggle = Tab:CreateToggle({
    Flag = "Toggle1",
    Callback = function(Value)
       isAutoFarmEnabled = Value
+      Rayfield:Notify({
+         Title = Value and "Auto Farm Enabled" or "Auto Farm Disabled",
+         Content = Value and "Auto Farm is now active" or "Auto Farm is now inactive",
+         Duration = 6.5,
+         Image = 4483362458
+      })
       if Value then
          if LocalPlayer.Character then
             startTeleportSequence()
@@ -228,5 +249,29 @@ local NotificationToggle = Tab:CreateToggle({
    Flag = "Toggle2",
    Callback = function(Value)
       isNotificationEnabled = Value
+      Rayfield:Notify({
+         Title = Value and "Case Notification Enabled" or "Case Notification Disabled",
+         Content = Value and "Case notifications are now active" or "Case notifications are now inactive",
+         Duration = 6.5,
+         Image = 4483362458
+      })
+   end,
+})
+
+local AntiAfkToggle = Tab:CreateToggle({
+   Name = "Anti AFK",
+   CurrentValue = false,
+   Flag = "Toggle3",
+   Callback = function(Value)
+      isAntiAfkEnabled = Value
+      Rayfield:Notify({
+         Title = Value and "Anti AFK Enabled" or "Anti AFK Disabled",
+         Content = Value and "Anti AFK is now active" or "Anti AFK is now inactive",
+         Duration = 6.5,
+         Image = 4483362458
+      })
+      if Value then
+         startAntiAfk()
+      end
    end,
 })
